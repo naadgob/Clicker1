@@ -1,0 +1,272 @@
+<title>Clicker1</title>
+
+<button id="startbtn">Start</button>
+<button id="clickbtn" style="display: none">Click</button>
+<button id="restart" style="display: none">Restart</button>
+<div id="userTimeBlock">
+  <label for="userTime">Set Time (seconds): </label>
+  <input id="userTime" type="number" placeholder="Enter a number" min="1" max = 120>
+</div>
+
+<p id="counter" style="display: none">0</p>
+<p id="timer" style="display: none"></p>
+<p id="timeIsOver"></p>
+<p id="result"></p>
+<p id="bestResult"></p>
+
+
+<style>
+  body {
+    background-color: rgb(50, 48, 48);
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    border: 0px;
+  }
+  
+  #startbtn {
+    font-size: 60px;
+    padding: 10px 25px;
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #0a741c;
+    color: white;
+    border-radius: 10px;
+    border: 1px solid black;
+    box-shadow: rgba(0, 0, 0, 0.3) 2px 3px 8px;
+    outline: none;
+    user-select: none;
+    transition: 0.5s;
+  }
+
+  #startbtn:hover {
+    background-color: #08881e;
+    transform: translate(-50%, -50%) scale(1.15);
+  }
+
+
+  #restart {
+    font-size: 24px;
+    padding: 5px 15px;
+    cursor: pointer;
+    position: absolute;
+    top: 90%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #0a741c;
+    color: white;
+    border-radius: 10px;
+    border: 1px solid black;
+    box-shadow: rgba(0, 0, 0, 0.3) 2px 3px 8px;
+    outline: none;
+    user-select: none;
+    transition: 0.5s;
+  }
+
+  #restart:hover {
+    background-color: #08881e;
+    transform: translate(-50%, -50%) scale(1.15);
+  }
+
+
+  #clickbtn {
+    font-size: 48px;
+    padding: 10px 25px;
+    cursor: pointer;
+    position: absolute;
+    top: 43%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #3413b8;
+    color: white;
+    border-radius: 10px;
+    border: 1px solid black;
+    box-shadow: rgba(0, 0, 0, 0.3) 2px 3px 8px;
+    outline: none;
+    user-select: none;
+
+  }
+
+  #clickbtn:active {
+    box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 4px;
+    transform: translate(-50%, -50%) scale(0.98);
+  }
+
+  #clickbtn:hover {
+    background-color: #4e32d6;
+  }
+
+
+  #counter {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 72px;
+    user-select: none;
+  }
+
+  #timer {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 48px;
+    user-select: none;
+  }
+
+  #timeIsOver {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 48px;
+    user-select: none;
+  }
+
+  #result {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 36px;
+    user-select: none;
+  }
+
+  #bestResult {
+    position: absolute;
+    top: 75%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    user-select: none;
+  }
+
+#userTimeBlock {
+  position: absolute;
+  top: 5%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 24px;
+}
+#userTime {
+  position: static;
+  transform: none;
+  font-size: 24px;
+  width: 200px;
+  text-align: center;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  padding: 5px;
+}
+
+#userTime:disabled {
+  background-color: #ddd;
+  color: #888;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+</style>
+
+<script>
+  let count = 0;
+  let time = 10;
+  let initialTime = time;
+  let bestResult = 0;
+  let interval;
+  
+  const timer = document.getElementById('timer');
+  const startbtn = document.getElementById('startbtn');
+  const counter = document.getElementById('counter');
+  const clickbtn = document.getElementById('clickbtn');
+  const restart = document.getElementById('restart');
+  const timeIsOver = document.getElementById('timeIsOver');
+  const resultElem = document.getElementById('result');
+  const bestResultElem = document.getElementById('bestResult');
+  const userTimeInput = document.getElementById('userTime');
+
+
+  startbtn.addEventListener('click', () => {
+    startbtn.style.display = 'none';
+    counter.style.display = 'block';
+    clickbtn.style.display = 'block';
+    timer.style.display = 'block';
+    restart.style.display = 'block';
+    
+    clickbtn.focus();
+
+    let userTime = Number(userTimeInput.value);
+    if (isNaN(userTime) || userTime <= 0) {
+      userTime = 10; 
+    }
+    userTime = Math.round(userTime);
+    if (userTime > 120) userTime = 120;
+
+    count = 0;
+    time = initialTime = userTime;
+    counter.textContent = count;
+    timer.textContent = time;
+    timeIsOver.textContent = "";
+    resultElem.textContent = "";
+    userTimeInput.disabled = true;
+    clickbtn.disabled = false;
+    clickbtn.style.backgroundColor = '#3413b8';
+
+    interval = setInterval(() => {
+      time--;
+      timer.textContent = time;
+      if (time <= 0) {
+        clearInterval(interval);
+        timer.style.display = 'none';
+        timeIsOver.textContent = "Time is over";
+
+        let result = count / initialTime;
+        if (result > bestResult) {
+          bestResult = result;
+        }
+
+        resultElem.textContent = `Your result: ${result.toFixed(1)} clicks per second`;
+        bestResultElem.textContent = `Best result: ${bestResult.toFixed(1)} clicks per second`;
+
+        clickbtn.disabled = true;
+        clickbtn.style.backgroundColor = 'grey';
+      }
+    }, 1000);
+  });
+
+  clickbtn.addEventListener('click', () => {
+    count++;
+    counter.textContent = count;
+  });
+
+  restart.addEventListener('click', () => {
+    clearInterval(interval);
+    count = 0;
+    time = initialTime;
+
+    counter.textContent = count;
+    timer.textContent = time;
+    timeIsOver.textContent = "";
+    resultElem.textContent = "";
+    userTimeInput.value = "";
+    userTimeInput.disabled = false;
+
+    userTimeInput.focus();
+
+    clickbtn.disabled = false;
+    clickbtn.style.backgroundColor = '#3413b8';
+
+    counter.style.display = 'none';
+    clickbtn.style.display = 'none';
+    timer.style.display = 'none';
+    restart.style.display = 'none';
+    startbtn.style.display = 'block';
+  });
+</script>
