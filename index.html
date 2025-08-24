@@ -1,16 +1,248 @@
+<!doctype html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Clicker1</title>
-</head>
-<body>
 
-  <button id="startbtn">Start</button>
-  <button id="clickbtn" style="display: none">Click</button>
-  <button id="restart" style="display: none">Restart</button>
+  <style>
+    *,
+    *::before,
+    *::after { box-sizing: border-box; }
+    :root { font-size: 16px; }
+
+    body {
+      background-color: rgb(50, 48, 48);
+      color: white;
+      font-family: Arial, Helvetica, sans-serif;
+      border: 0;
+      margin: 0;
+      box-sizing: border-box;
+      min-height: 100vh;
+      height: auto;
+      padding-bottom: 5vh;
+      position: relative;
+      overflow: auto;
+    }
+
+    #startbtn {
+      font-size: 3.75rem;
+      padding: 0.625rem 1.5625rem;
+      cursor: pointer;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #0a741c;
+      color: white;
+      border-radius: 0.625rem;
+      border: 0.0625rem solid black;
+      box-shadow: rgba(0, 0, 0, 0.3) 0.125rem 0.1875rem 0.5rem;
+      outline: none;
+      transition: 0.5s;
+    }
+
+    #startbtn:hover {
+      background-color: #08881e;
+      transform: translate(-50%, -50%) scale(1.15);
+    }
+
+    #restart {
+      font-size: 1.5rem;
+      padding: 0.3125rem 0.9375rem;
+      cursor: pointer;
+      position: absolute;
+      bottom: 4vh;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #0a741c;
+      color: white;
+      border-radius: 0.625rem;
+      border: 0.0625rem solid black;
+      box-shadow: rgba(0, 0, 0, 0.3) 0.125rem 0.1875rem 0.5rem;
+      outline: none;
+      user-select: none;
+      transition: 0.5s;
+    }
+
+    #restart:hover {
+      background-color: #08881e;
+      transform: translateX(-50%) scale(1.15);
+    }
+
+    #clickbtn {
+      font-size: 3rem;
+      padding: 0.625rem 1.5625rem;
+      cursor: pointer;
+      position: absolute;
+      top: 43%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #3413b8;
+      color: white;
+      border-radius: 0.625rem;
+      border: 0.0625rem solid black;
+      box-shadow: rgba(0, 0, 0, 0.3) 0.125rem 0.1875rem 0.5rem;
+      outline: none;
+      user-select: none;
+    }
+
+    #clickbtn:active {
+      box-shadow: rgba(0, 0, 0, 0.3) 0.0625rem 0.0625rem 0.25rem;
+      transform: translate(-50%, -50%) scale(0.98);
+    }
+
+    #clickbtn:hover { background-color: #4e32d6; }
+
+    #counter {
+      position: absolute;
+      top: 45%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 4.5rem;
+      user-select: none;
+    }
+
+    #timer {
+      position: absolute;
+      top: 20%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 3rem;
+      user-select: none;
+    }
+
+    #timeIsOver {
+      position: absolute;
+      top: 20%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 3rem;
+      user-select: none;
+      color: #0f0;
+    }
+
+    #result {
+      position: absolute;
+      top: 60%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 2.25rem;
+      user-select: none;
+    }
+
+    #bestResult {
+      position: absolute;
+      top: 75%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.5rem;
+      user-select: none;
+    }
+
+    #userTimeBlock {
+      position: absolute;
+      top: 5%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      font-size: 1.5rem;
+    }
+
+    #userTime {
+      position: static;
+      transform: none;
+      font-size: 1.5rem;
+      width: 12.5rem;
+      text-align: center;
+      border-radius: 0.625rem;
+      border: none;
+      outline: none;
+      padding: 0.3125rem;
+      background: rgba(255,255,255,0.03);
+      color: #fff;
+    }
+
+    #userTime:disabled {
+      background-color: #e6e6e6;
+      color: #666;
+      cursor: not-allowed;
+      opacity: 1;
+    }
+
+    /* Адаптация под телефоны */
+    @media (max-width: 800px) {
+      body { max-height: 100vh; }
+
+      #startbtn, #clickbtn {
+        font-size: 3rem;
+        padding: 1rem 2rem;
+      }
+
+      #restart {
+        font-size: 2rem;
+        bottom: 6vh;
+        transform: translateX(-50%);
+      }
+
+      #counter {
+        font-size: 3rem;
+        top: 47%;
+      }
+
+      #timer, #timeIsOver {
+        font-size: 2.7rem;
+        top: 25%;
+      }
+
+      #result {
+        font-size: 1.5rem;
+        text-align: center;
+        top: 57%;
+        width: 100vw;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      #bestResult {
+        font-size: 1.5rem;
+        text-align: center;
+        top: 65%;
+        width: 100vw;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      #userTimeBlock {
+        flex-direction: row;
+        align-items: center;
+        top: 10%;
+      }
+    }
+
+    /* Планшеты */
+    @media (min-width: 601px) and (max-width: 900px) {
+      #startbtn { font-size: 3.25rem; padding: 0.75rem 1.5rem; }
+      #clickbtn { font-size: 2.6rem; padding: 0.6rem 1.4rem; top: 44%; }
+      #counter { font-size: 4rem; }
+      #timer { font-size: 2.6rem; }
+      #userTime { width: 11.5rem; font-size: 1.25rem; }
+    }
+  </style>
+</head>
+
+<body>
+  <button type="button" id="startbtn">Start</button>
+  <button type="button" id="clickbtn" style="display: none">Click</button>
+  <button type="button" id="restart" style="display: none">Restart</button>
+
   <div id="userTimeBlock">
     <label for="userTime">Set Time (seconds): </label>
-    <input id="userTime" type="number" placeholder="Enter a number" min="1" max = 120>
+    <input id="userTime" type="number" placeholder="Enter a number" min="1" max="120">
   </div>
 
   <p id="counter" style="display: none">0</p>
@@ -18,287 +250,99 @@
   <p id="timeIsOver"></p>
   <p id="result"></p>
   <p id="bestResult"></p>
-</body>
 
-<style>
-  :root {
-    font-size: 16px;
-  }
-  
-  body {
-    background-color: rgb(50, 48, 48);
-    color: white;
-    font-family: Arial, Helvetica, sans-serif;
-    border: 0px;
-    margin: 0;
-    box-sizing: border-box;
-  }
-  
-  #startbtn {
-    font-size: 3.75rem;           
-    padding: 0.625rem 1.5625rem;
-    cursor: pointer;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #0a741c;
-    color: white;
-    border-radius: 0.625rem;
-    border: 0.0625rem solid black;
-    box-shadow: rgba(0, 0, 0, 0.3) 0.125rem 0.1875rem 0.5rem;
-    outline: none;
-    transition: 0.5s;
-  }
+  <script>
+    // ...existing code...
+    let count = 0;
+    let time = 10;
+    let initialTime = time;
+    let bestResult = 0;
+    let interval;
 
-  #startbtn:hover {
-    background-color: #08881e;
-    transform: translate(-50%, -50%) scale(1.15);
-  }
+    const timer = document.getElementById('timer');
+    const startbtn = document.getElementById('startbtn');
+    const counter = document.getElementById('counter');
+    const clickbtn = document.getElementById('clickbtn');
+    const restart = document.getElementById('restart');
+    const timeIsOver = document.getElementById('timeIsOver');
+    const resultElem = document.getElementById('result');
+    const bestResultElem = document.getElementById('bestResult');
+    const userTimeInput = document.getElementById('userTime');
 
+    startbtn.addEventListener('click', () => {
+      startbtn.style.display = 'none';
+      counter.style.display = 'block';
+      clickbtn.style.display = 'block';
+      timer.style.display = 'block';
+      restart.style.display = 'block';
 
-  #restart {
-    font-size: 1.5rem;
-    padding: 0.3125rem 0.9375rem;
-    cursor: pointer;
-    position: absolute;
-    top: 90%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #0a741c;
-    color: white;
-    border-radius: 0.625rem;
-    border: 0.0625rem solid black;
-    box-shadow: rgba(0, 0, 0, 0.3) 0.125rem 0.1875rem 0.5rem;
-    outline: none;
-    user-select: none;
-    transition: 0.5s;
-  }
+      clickbtn.focus();
 
-  #restart:hover {
-    background-color: #08881e;
-    transform: translate(-50%, -50%) scale(1.15);
-  }
-
-
-  #clickbtn {
-    font-size: 3rem;
-    padding: 0.625rem 1.5625rem;
-    cursor: pointer;
-    position: absolute;
-    top: 43%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #3413b8;
-    color: white;
-    border-radius: 0.625rem;
-    border: 0.0625rem solid black;
-    box-shadow: rgba(0, 0, 0, 0.3) 0.125rem 0.1875rem 0.5rem;
-    outline: none;
-    user-select: none;
-
-  }
-
-  #clickbtn:active {
-    box-shadow: rgba(0, 0, 0, 0.3) 0.0625rem 0.0625rem 0.25rem;
-    transform: translate(-50%, -50%) scale(0.98);
-  }
-
-  #clickbtn:hover {
-    background-color: #4e32d6;
-  }
-
-
-  #counter {
-    position: absolute;
-    top: 45%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 4.5rem;
-    user-select: none;
-  }
-
-  #timer {
-    position: absolute;
-    top: 20%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 3rem;
-    user-select: none;
-  }
-
-  #timeIsOver {
-    position: absolute;
-    top: 20%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 3rem;
-    user-select: none;
-  }
-
-  #result {
-    position: absolute;
-    top: 60%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 2.25rem;
-    user-select: none;
-  }
-
-  #bestResult {
-    position: absolute;
-    top: 75%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 1.5rem;
-    user-select: none;
-  }
-
-#userTimeBlock {
-  position: absolute;
-  top: 5%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  align-items: center;
-  gap: 0.625rem; 
-  font-size: 1.5rem; 
-}
-#userTime {
-  position: static;
-  transform: none;
-  font-size: 1.5rem; 
-  width: 12.5rem;    
-  text-align: center;
-  border-radius: 0.625rem;
-  border: none;
-  outline: none;
-  padding: 0.3125rem; 
-}
-
-#userTime:disabled {
-  background-color: #ddd;
-  color: #888;
-  cursor: not-allowed;
-  opacity: 0.7;
-}
-
-@media (max-width: 600px) {
-  #startbtn, #clickbtn {
-    font-size: 2.2rem;
-    padding: 1rem 2rem;
-  }
-  #restart {
-    font-size: 1rem;
-  }
-  #counter { font-size: 2.5rem; }
-  #timer, #timeIsOver { font-size: 1.8rem; }
-  #result, #bestResult { font-size: 1rem; text-align: center; }
-  #userTimeBlock { flex-direction: column; align-items: center; }
-
-  /* Средние экраны (планшеты) */
-  @media (min-width: 601px) and (max-width: 900px) {
-    #startbtn { font-size: 3.25rem; padding: 0.75rem 1.5rem; }
-    #clickbtn { font-size: 2.6rem; padding: 0.6rem 1.4rem; top: 44%; }
-    #counter { font-size: 4rem; }
-    #timer { font-size: 2.6rem; }
-    #userTime { width: 11.5rem; font-size: 1.25rem; }
-  }
-
-</style>
-
-<script>
-  let count = 0;
-  let time = 10;
-  let initialTime = time;
-  let bestResult = 0;
-  let interval;
-  
-  const timer = document.getElementById('timer');
-  const startbtn = document.getElementById('startbtn');
-  const counter = document.getElementById('counter');
-  const clickbtn = document.getElementById('clickbtn');
-  const restart = document.getElementById('restart');
-  const timeIsOver = document.getElementById('timeIsOver');
-  const resultElem = document.getElementById('result');
-  const bestResultElem = document.getElementById('bestResult');
-  const userTimeInput = document.getElementById('userTime');
-
-
-  startbtn.addEventListener('click', () => {
-    startbtn.style.display = 'none';
-    counter.style.display = 'block';
-    clickbtn.style.display = 'block';
-    timer.style.display = 'block';
-    restart.style.display = 'block';
-    
-    clickbtn.focus();
-
-    let userTime = Number(userTimeInput.value);
-    if (isNaN(userTime) || userTime <= 0) {
-      userTime = 10; 
-    }
-    userTime = Math.round(userTime);
-    if (userTime > 120) userTime = 120;
-
-    count = 0;
-    time = initialTime = userTime;
-    counter.textContent = count;
-    timer.textContent = time;
-    timeIsOver.textContent = "";
-    resultElem.textContent = "";
-    userTimeInput.disabled = true;
-    clickbtn.disabled = false;
-    clickbtn.style.backgroundColor = '#3413b8';
-
-    interval = setInterval(() => {
-      time--;
-      timer.textContent = time;
-      if (time <= 0) {
-        clearInterval(interval);
-        timer.style.display = 'none';
-        timeIsOver.textContent = "Time is over";
-
-        let result = count / initialTime;
-        if (result > bestResult) {
-          bestResult = result;
-        }
-
-        resultElem.textContent = `Your result: ${result.toFixed(1)} clicks per second`;
-        bestResultElem.textContent = `Best result: ${bestResult.toFixed(1)} clicks per second`;
-
-        clickbtn.disabled = true;
-        clickbtn.style.backgroundColor = 'grey';
+      let userTime = Number(userTimeInput.value);
+      if (isNaN(userTime) || userTime <= 0) {
+        userTime = 10;
       }
-    }, 1000);
-  });
+      userTime = Math.round(userTime);
+      if (userTime > 120) userTime = 120;
 
-  clickbtn.addEventListener('click', () => {
-    count++;
-    counter.textContent = count;
-  });
+      count = 0;
+      time = initialTime = userTime;
+      counter.textContent = count;
+      timer.textContent = `${time}s`;
+      timeIsOver.textContent = "";
+      resultElem.textContent = "";
+      userTimeInput.disabled = true;
+      clickbtn.disabled = false;
+      clickbtn.style.backgroundColor = '#3413b8';
 
-  restart.addEventListener('click', () => {
-    clearInterval(interval);
-    count = 0;
-    time = initialTime;
+      interval = setInterval(() => {
+        time--;
+        timer.textContent = `${time}s`;
+        if (time <= 0) {
+          clearInterval(interval);
+          timer.style.display = 'none';
+          timeIsOver.textContent = "Time is over";
 
-    counter.textContent = count;
-    timer.textContent = time;
-    timeIsOver.textContent = "";
-    resultElem.textContent = "";
-    userTimeInput.value = "";
-    userTimeInput.disabled = false;
+          let result = count / initialTime;
+          if (result > bestResult) {
+            bestResult = result;
+          }
 
-    userTimeInput.focus();
+          resultElem.textContent = `Your result: ${result.toFixed(1)} clicks per second`;
+          bestResultElem.textContent = `Best result: ${bestResult.toFixed(1)} clicks/sec`;
 
-    clickbtn.disabled = false;
-    clickbtn.style.backgroundColor = '#3413b8';
+          clickbtn.disabled = true;
+          clickbtn.style.backgroundColor = 'grey';
+        }
+      }, 1000);
+    });
 
-    counter.style.display = 'none';
-    clickbtn.style.display = 'none';
-    timer.style.display = 'none';
-    restart.style.display = 'none';
-    startbtn.style.display = 'block';
-  });
-</script>
+    clickbtn.addEventListener('click', () => {
+      count++;
+      counter.textContent = count;
+    });
+
+    restart.addEventListener('click', () => {
+      clearInterval(interval);
+      count = 0;
+      time = initialTime;
+
+      counter.textContent = count;
+      timer.textContent = `${time}s`;
+      timeIsOver.textContent = "";
+      resultElem.textContent = "";
+      userTimeInput.value = "";
+      userTimeInput.disabled = false;
+
+      clickbtn.disabled = false;
+      clickbtn.style.backgroundColor = '#3413b8';
+
+      counter.style.display = 'none';
+      clickbtn.style.display = 'none';
+      timer.style.display = 'none';
+      restart.style.display = 'none';
+      startbtn.style.display = 'block';
+    });
+  </script>
+</body>
+</html>
