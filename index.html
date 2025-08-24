@@ -184,32 +184,17 @@
 }
 
 @media (max-width: 600px) {
-    :root { font-size: 16px; } /* оставим 1rem = 16px, но увеличим конкретные элементы */
-
-    #startbtn {
-      font-size: 3rem;           /* немного больше для удобства на телефоне */
-      padding: 1rem 2rem;
-      border-radius: 0.8rem;
-    }
-    #clickbtn {
-      font-size: 3.3rem;
-      padding: 1rem 2rem;
-      border-radius: 0.8rem;
-      top: 43%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-    #restart {
-      font-size: 1.25rem;
-      padding: 0.5rem 1rem;
-      top: 92%;
-    }
-    #counter { font-size: 4rem; }
-    #timer, #timeIsOver { font-size: 3rem; width: 400px;}
-    #result, #bestResult { font-size: 1.25rem; top: 43%; left: 50%; transform: translate(-50%, -50%); }
-    #userTimeBlock { font-size: 1.1rem; gap: 0.5rem; top: 4%; }
-    #userTime { width: 10.5rem; font-size: 1.1rem; padding: 0.45rem 0.6rem; }
+  #startbtn, #clickbtn {
+    font-size: 2.2rem;
+    padding: 1rem 2rem;
   }
+  #restart {
+    font-size: 1rem;
+  }
+  #counter { font-size: 2.5rem; }
+  #timer, #timeIsOver { font-size: 1.8rem; }
+  #result, #bestResult { font-size: 1rem; text-align: center; }
+  #userTimeBlock { flex-direction: column; align-items: center; }
 
   /* Средние экраны (планшеты) */
   @media (min-width: 601px) and (max-width: 900px) {
