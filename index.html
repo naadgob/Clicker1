@@ -192,9 +192,17 @@
         top: 47%;
       }
 
-      #timer, #timeIsOver {
+      #timer {
         font-size: 2.7rem;
         top: 25%;
+      }
+
+      #timeIsOver {
+        font-size: 2.5rem;
+        top: 25%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;      
       }
 
       #result {
@@ -345,4 +353,5 @@
     });
   </script>
 </body>
+
 </html>
