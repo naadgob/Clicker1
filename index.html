@@ -114,7 +114,7 @@
     top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 3rem;
+    font-size: 4.5rem;
     user-select: none;
   }
 
@@ -187,24 +187,26 @@
     :root { font-size: 16px; } /* оставим 1rem = 16px, но увеличим конкретные элементы */
 
     #startbtn {
-      font-size: 4rem;           /* немного больше для удобства на телефоне */
+      font-size: 3rem;           /* немного больше для удобства на телефоне */
       padding: 1rem 2rem;
       border-radius: 0.8rem;
     }
     #clickbtn {
-      font-size: 3.6rem;
+      font-size: 3.3rem;
       padding: 1rem 2rem;
       border-radius: 0.8rem;
-      top: 46%;
+      top: 43%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
     #restart {
       font-size: 1.25rem;
       padding: 0.5rem 1rem;
       top: 92%;
     }
-    #counter { font-size: 5rem; }
-    #timer, #timeIsOver { font-size: 3.2rem; }
-    #result, #bestResult { font-size: 1.25rem; }
+    #counter { font-size: 4rem; }
+    #timer, #timeIsOver { font-size: 3rem; width: 400px;}
+    #result, #bestResult { font-size: 1.25rem; top: 43%; left: 50%; transform: translate(-50%, -50%); }
     #userTimeBlock { font-size: 1.1rem; gap: 0.5rem; top: 4%; }
     #userTime { width: 10.5rem; font-size: 1.1rem; padding: 0.45rem 0.6rem; }
   }
@@ -303,6 +305,8 @@
     userTimeInput.value = "";
     userTimeInput.disabled = false;
 
+    userTimeInput.focus();
+
     clickbtn.disabled = false;
     clickbtn.style.backgroundColor = '#3413b8';
 
@@ -313,5 +317,3 @@
     startbtn.style.display = 'block';
   });
 </script>
-
-
